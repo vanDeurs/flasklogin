@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm as Form
 from wtforms import TextField, TextAreaField, SubmitField, validators, ValidationError, PasswordField
 from app.intro_to_flask.models import db, User
 
+
 class ContactForm(Form):
     name = TextField("Name", [validators.DataRequired("Please enter your name.")])
     email = TextField("Email", [validators.DataRequired("Please enter your email address."),
@@ -48,10 +49,8 @@ class SigninForm(Form):
             return False
 
         user = User.query.filter_by(email=self.email.data.lower()).first()
-        if user and user.check_password(self.password.data): #Something wrong with password checking, user is fine.
+        if user and user.check_password(self.password.data):  # Something wrong with password checking, user is fine.
             return True
         else:
             self.email.errors.append("Invalid e-mail or password" + self.password.data)
             return False
-
-

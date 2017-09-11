@@ -1,11 +1,8 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_mail import Message, Mail
-from app.intro_to_flask.forms import ContactForm
 from app.intro_to_flask.models import db, User
-import app
 from flask import render_template, request, flash
 from app.intro_to_flask.forms import ContactForm, SignupForm, SigninForm
-
 
 mail = Mail()
 
@@ -28,13 +25,16 @@ from app.intro_to_flask.models import db
 
 db.init_app(app)
 
+
 @app.route('/')
 def home():
     return render_template('home.html')
 
+
 @app.route('/about')
 def about():
     return render_template('about.html')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -61,6 +61,8 @@ def contact():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
+    if 'email' in session:
+        return redirect(url_for('profile'))
 
     if request.method == 'POST':
         if form.validate() == False:
@@ -82,7 +84,8 @@ def signup():
     elif request.method == 'GET':
         return render_template('signup.html', form=form)
 
-#TODO:SIGN IN NOT WORKING, JUST DISPLAYING ERROR MESSAGE
+
+# TODO:SIGN IN NOT WORKING, JUST DISPLAYING ERROR MESSAGE
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
@@ -90,7 +93,7 @@ def signin():
 
     if request.method == 'POST':
         if form.validate() == False:
-            print("Form validation is false, but it should work? Keep going!")
+            print("Same error.")
             return render_template('signin.html', form=form)
         else:
             session['email'] = form.email.data
