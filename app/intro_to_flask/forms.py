@@ -48,24 +48,9 @@ class SigninForm(Form):
         if not Form.validate(self):
             return False
 
-        user = User.query.filter_by(
-            email=self.email.data.lower()).first()
-        if user is None:
-            self.email.errors.append('Unknown me')
-            return False
-
-        if not user.check_password(self.password.data.lower()):
-            self.password.errors.append('Invalid password')
-            return False
-
-        self.user = user
-        return True
-
-
-
-        """user = User.query.filter_by(email=self.email.data.lower()).first()
+        user = User.query.filter_by(email=self.email.data.lower()).first()
         if user and user.check_password(self.password.data):  # Something wrong with password checking, user is fine.
             return True
         else:
             self.email.errors.append("Invalid e-mail or password" + self.password.data)
-            return False"""
+            return False
